@@ -1,0 +1,96 @@
+{% extends "navbar.html" %}
+
+{% block body_content %}
+  <div class="container py-3 mx-auto">
+    <div class="jumbotron text-white mx-auto" style="max-width: 62rem;background-color:#7FDC6F;">
+      <h2 class="display-5 text-center">Order Successful!!&nbsp;<i class="bi bi-check-circle"></i></h2>
+      <p class="lead text-center">You should receive order details via email and phone number shortly.</p>
+      <hr class="my-0">
+    </div>
+  </div>
+<div class="card border-success mb-3 mx-auto" style="min-width:2rem;max-width: 45rem;">
+
+  <div class="card-header border-success text-center">Order Details</div>
+
+  <div class="card-body text-dark">
+    <table class="table table-borderless">
+      <tbody class="text-center">
+      <tr>
+        <th scope="row"><h6 class="card-text">Order Number</h6></th>
+        <td style="max-width:1rem;">{{ session['latestOrder']['order_number'] }}</td>
+      </tr>
+      <tr>
+        <th scope="row"><h6 class="card-text">Order Date</h6></th>
+        <td>{{ session['latestOrder']['date'] }}</td>
+      </tr>
+      <tr>
+        <th scope="row"><h6 class="card-text">Total Price</h6></th>
+        <td>${{ session['latestOrder']['price'] }}</td>
+      </tr>
+      <tr>
+        <th scope="row"><h6 class="card-text">Payment Method</h6></th>
+        <td>{{ session['latestOrder']['payment_type'] }}</td>
+      </tr>
+      <tr>
+        <th scope="row"><h6 class="card-text">Payment Status</h6></th>
+        <td>{{ session['latestOrder']['payment_status'] }}</td>
+      </tr>
+      <tr>
+        <th scope="row"><h6 class="card-text">Order Status</h6></th>
+        <td>{{ session['latestOrder']['status'] }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card-header border-success text-center mt-1">Delivery Details</div>
+
+  <div class="card-body text-dark">
+    <table class="table table-borderless">
+  <tbody class="text-center">
+    <tr>
+      <th scope="row"><h6 class="card-text">First name</h6></th>
+      <td>{{ session['latestOrder']['first_name'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Last name</h6></th>
+      <td>{{ session['latestOrder']['last_name'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Email</h6></th>
+      <td>{{ session['latestOrder']['email'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Phone number</h6></th>
+      <td>{{ session['latestOrder']['phone'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Address Line 1</h6></th>
+      <td>{{ session['latestOrder']['address_1'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Address Line 2</h6></th>
+      <td>{{ session['latestOrder']['address_2'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">City</h6></th>
+      <td>{{ session['latestOrder']['city'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">State</h6></th>
+      <td>{{ session['latestOrder']['state'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Country</h6></th>
+      <td>{{ session['latestOrder']['country'] }}</td>
+    </tr>
+    <tr>
+      <th scope="row"><h6 class="card-text">Pincode</h6></th>
+      <td>{{ session['latestOrder']['pincode'] }}</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<hr/>
+{% endblock %}

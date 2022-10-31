@@ -1,0 +1,239 @@
+{% extends "navbar.html" %}
+
+{% block body_content %}
+<div class="container py-3 mx-auto">
+  {#
+  {% if e %}
+  {% endif %}
+  #}
+  <div class="form-group row">
+    <div class="col-sm-2"></div>
+    <p class="lead ml-0 col-sm-12 fw-20 text-center" style="color:black;">Checkout Form</p>
+  </div>
+<form method="post" action="{{ url_for('view.checkout') }}">
+  {{ form.csrf_token }}
+  <div class="form-group row">
+    {{ form.first_name.label(class="col-sm-2 col-form-label") }}
+    <div class="col-sm-10">
+      {{ form.first_name(size=10, class='form-control', required=false) }}
+      {% if form.first_name.errors %}
+        <ul>
+          {% for error in form.first_name.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.last_name.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.last_name(class='form-control') }}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.email.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.email(class='form-control', required=false) }}
+      {% if form.email.errors %}
+      <ul>
+        {% for error in form.email.errors %}
+          <li class="ml-0" style="color:red;">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.phone.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.phone(class='form-control', type='num') }}
+      {% if form.phone.errors %}
+        <ul>
+          {% for error in form.phone.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.address_1.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.address_1(class='form-control', type='num') }}
+      {% if form.address_1.errors %}
+        <ul>
+          {% for error in form.address_1.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.address_2.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.address_2(class='form-control', type='num') }}
+      {% if form.address_2.errors %}
+        <ul>
+          {% for error in form.address_2.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.city.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.city(class='form-control', type='num') }}
+      {% if form.city.errors %}
+        <ul>
+          {% for error in form.city.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.state.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.state(class='form-control', type='num') }}
+      {% if form.state.errors %}
+        <ul>
+          {% for error in form.state.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.country.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.country(class='form-control', type='num') }}
+      {% if form.country.errors %}
+        <ul>
+          {% for error in form.country.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    {{ form.pincode.label(class="col-sm-2 col-form-label")}}
+    <div class="col-sm-10">
+      {{ form.pincode(class='form-control', type='num') }}
+      {% if form.pincode.errors %}
+        <ul>
+          {% for error in form.pincode.errors %}
+            <li class="ml-0" style="color:red;">{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <fieldset class="form-group">
+    <div class="row">
+      {{ form.payment_type.label(class=" col-sm-2 pt-0", style="max-width:50%;") }}
+      {{ form.payment_type(class="col-sm-0 mx-sm-0 mx-md-3") }}
+    </div>
+  </fieldset>
+  {% if form.payment_type.data and form.payment_type.data == 'Card' %}
+    <div class="form-group row card card2 mt-2" style="min-width:335px; max-width:400px" id="carddetails">
+  {% else %}
+    <div class="form-group row card card2 mt-2" style="min-width:335px; max-width:400px" id="carddetails" hidden>
+  {% endif %}
+      <div class="card-header">
+      <p>Card details:</p>
+      </div>
+      <div class="card-body">
+        <div class="form-group row">
+          {{ cardForm.card_number.label(class="col-sm-0 pt-0 mx-2", style="max-width:50%;") }}
+          <div style="margin-left:auto;">
+            {{ cardForm.card_number(class="col-sm-0mx-sm-0", required=false) }}
+            {% if cardForm.card_number.errors %}
+              {% for error in cardForm.card_number.errors %}
+                <p class="ml-0" style="color:red;">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+          {{ cardForm.expiry.label(class=" col-sm-0 pt-0 mx-2", style="max-width:50%;") }}
+          <div style="margin-left:auto;">
+            {{ cardForm.expiry(class="col-sm-0 mx-sm-0", type="month", required=false) }}
+            {% if cardForm.expiry.errors %}
+              {% for error in cardForm.expiry.errors %}
+                <p class="ml-0" style="color:red;">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+        {{ cardForm.cvc.label(class=" col-sm-0 pt-0 mx-2", style="max-width:50%;") }}
+        <div style="margin-left:auto;">
+          {{ cardForm.cvc(class="col-sm-0 mx-sm-0", required=false) }}
+          {% if cardForm.cvc.errors %}
+            {% for error in cardForm.cvc.errors %}
+              <p class="ml-0" style="color:red;">{{ error }}</p>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      </div>
+    </div>
+  <div class="form-group row mt-2">
+    {{ form.no_contact_delivery.label(class="form-check-label col-sm-0 col-md-2", style="max-width:50%;") }}
+    {{ form.no_contact_delivery(class="col-sm-0 mx-sm-1 form-check ml-sm-3") }}
+  </div>
+  <hr/>
+  <div class="form-group row">
+    <div class="col-sm-3 col-md-3 col-lg-3" style="width: auto;">
+      <b class="float-right">Total Basket Items:</b>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3" style="width: auto;">
+      <p class="float-left fw-50">{{ session['basketQuantity'] }}</p>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3 float-right" style="width: auto;">
+      <b class="fw-10 float-right">Total Price:</b>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3" style="width: auto;">
+      <p class="float-left fw-50">${{ session['basketPrice'] or 0 }}</p>
+    </div>
+  </div>
+  <hr/>
+  <div class="form-group row justify-content-around">
+    <div class="col-sm-0 col-md-3 col-lg-5"></div>
+    <div class="col-sm-0 col-md-3 col-lg-5"></div>
+    <div class="col-sm-12 col-md-6 col-lg-2">
+      {% if session['basketQuantity'] > 0 %}
+        <button type="submit" class="btn btn-info btn-mdg float-right rounded btn-block">Confirm Order</button>
+      {% else %}
+        <button type="submit" class="btn btn-info btn-mdg float-right rounded btn-block disabled">Confirm Order</button>
+      {% endif %}
+    </div>
+    <div class="col-sm-0 col-md-0 col-lg-0"></div>
+  </div>
+</form>
+</div>
+<hr/>
+<script>
+  window.addEventListener("load", function(){
+    let paymentType = document.getElementById("payment_type")
+    let cardForm = document.getElementById("carddetails")
+    paymentType.addEventListener("change", function(){
+        console.log(this)
+        console.log(this.value)
+        if (this.value === 'POD'){
+          cardForm.setAttribute("hidden", true)
+        }
+        if (this.value === 'Card'){
+          cardForm.removeAttribute("hidden")
+        }
+      })
+  })
+</script>
+{% endblock %}

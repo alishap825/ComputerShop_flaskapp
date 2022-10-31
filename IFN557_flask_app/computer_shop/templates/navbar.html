@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('view.index') }}"><img src="{{ url_for('static', filename='img/LOGO.png') }}" height="70px" width= "70px" class="d-block w-100" alt="..."></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('view.index') }}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('view.products') }}">Products</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                Category
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url_for('view.filter_product_details', filterType='category', filterValue='laptop') }}">Laptops</a>
+                <a class="dropdown-item" href="{{ url_for('view.filter_product_details', filterType='category', filterValue='accessory') }}">Electronic Accessories</a>
+                <a class="dropdown-item" href="{{ url_for('view.filter_product_details', filterType='category', filterValue='desktop') }}">Desktops</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0" action="{{ url_for('view.filter_product_details') }}" target="_self" method="get">
+            <input class="form-control" aria-label="brand" name="filterType" value="brand" hidden>
+            <input class="form-control" type="search" placeholder="Search brand" aria-label="Search" name="filterValue" required>
+            <button class="btn btn2 btn-outline-primary mx-lg-1 my-1 ml-sm-1" type="submit">Search</button>
+          </form>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn2 btn-primary mx-lg-1 rounded-pill" data-toggle="modal" data-target="#exampleModal">
+            <i class="bi bi-cart-plus mr-1"></i>Basket
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-cart-plus mr-2"></i>My Basket</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert2" hidden>
+                    <span></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onsubmit="location.reload();">
+                      <span aria-hidden="false">&times;</span>
+                    </button>
+                  </div>
+                  <hr/>
+                  <ul class="list-group">
+                    {%  if session['basket'] and session['basket']|length > 0 %}
+                    <div class="row justify-content-between">
+                      <div class="col-3">
+                        <center>
+                          Product
+                          <hr/>
+                        </center>
+                      </div>
+                      <div class="col-3">
+                        <center>
+                          Quantity
+                          <hr/>
+                        </center>
+                      </div>
+                      <div class="col-3">
+                        <center>
+                          Price
+                          <hr/>
+                        </center>
+                      </div>
+                      <div class="col-3">
+                        <center>
+                          Remove
+                          <hr/>
+                        </center>
+                      </div>
+                    </div>
+                    <hr/>
+                      {% for prod in session['basket'] %}
+                        <li class="list-group-item ">
+                            <div class="row justify-content-between">
+                              <div class="col-3">
+                                <div class="media">
+                                  <img src="{{ prod.product_details.img }}" class="mr-3 d-none d-lg-block" width="45rem" alt="{{ prod.product_details.name }}">
+                                  <div class="media-body">
+                                    {{ prod.product_details.name }}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <center>
+                                    {{ prod.quantity }}
+                                </center>
+                              </div>
+                              <div class="col-3">
+                                <center>
+                                  {{ prod.product_details.discount_price }}
+                                </center>
+                              </div>
+                              <div class="col-3" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                <center>
+                                  <button class="btn btn-outline-light btn-sm border-0" style="" onclick=" event.preventDefault(); deleteFromBasket({{ prod.product_id }})">
+                                    <i class="bi bi-dash-circle" style="color:red;" ></i>
+                                  </button>
+                                </center>
+                              </div>
+                            </div>
+                        </li>
+                      {% endfor %}
+                    <hr/>
+                    <div class="row">
+                      <div class="col-4">
+                        <center>
+                          <hr/>
+                          Total Price
+                        </center>
+                      </div>
+                      <div class="col-4">
+                      </div>
+                      <div class="col-4">
+                        <center>
+                          <hr/>
+                          ${{ session['basketPrice'] }}
+                        </center>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="row justify-content-between">
+                      <div class="col-4"></div>
+                      <div class="col-4">
+                        <center>Empty</center>
+                      </div>
+                      <div class="col-4">
+                      </div>
+                    </div>
+
+                    {% endif %}
+                  </ul>
+                  <hr/>
+                </div>
+                {% if session['basketQuantity'] > 0 %}
+                  <div class="modal-footer">
+                    <a href="{{ url_for('view.checkout') }}" type="button" class="btn btn-primary">Checkout</a>
+                  </div>
+                {% else %}
+                  <div class="modal-footer">
+                    <a tabindex="0" class="btn btn-primary disabled" role="button" data-toggle="popover" data-trigger="focus" title="checkout" data-content="Basket is empty">Checkout</a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <script>
+        function addToBasket(productId){
+            let elementForm = document.getElementById(productId)[0];
+            console.log(productId);
+            console.log(elementForm.value);
+            fetch ("/addToBasket", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ productId: productId, quantity: elementForm.value, action: "add"})
+                })
+            .then(x => {
+                console.log(x);
+                if(x.status === 200){
+                    sessionStorage.setItem("reloading", true);
+                    sessionStorage.setItem("status", "success");
+                    sessionStorage.setItem("message", "Item successfully added to basket!!");
+                    window.location.reload();
+                }
+            });
+        }
+        function deleteFromBasket(productId){
+            fetch ("/addToBasket", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ productId: productId, action: "remove"})
+                })
+            .then(x => {
+                console.log(x);
+                if(x.status === 200){
+                    sessionStorage.setItem("reloading", true);
+                    sessionStorage.setItem("status", "danger");
+                    sessionStorage.setItem("message", "Item successfully removed from basket!!");
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+{% endblock %}

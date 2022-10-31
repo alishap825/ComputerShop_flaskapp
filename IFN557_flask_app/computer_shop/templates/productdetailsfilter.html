@@ -1,0 +1,122 @@
+{% extends "navbar.html" %}
+
+{% block body_content %}
+    {% if products.items|length > 0 %}
+        {% if filter_type == "brand" %}
+            <p class="float-left mx-lg-3 my-lg-2">Displaying search results for "{{ product }}"</p>
+        {% endif %}
+        <div class="btn-group float-right mx-sm-0 my-sm-0 mx-lg-4 my-lg-2">
+          <span class="btn btn-outline-dark btn-sm border-0 disabled">
+              Showing {{ session['pageLimit'] }} items per page
+          </span>
+          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="{{ url_for('view.filter_product_details', filterType=filter_type, filterValue=product, pageLimit=5) }}">Show 5 per page</a>
+              <a class="dropdown-item" href="{{ url_for('view.filter_product_details', filterType=filter_type, filterValue=product, pageLimit=10) }}">Show 10 per page</a>
+          </div>
+        </div>
+        {% set pageLimit = session['pageLimit'] %}
+        {% for product in products.items %}
+             <section class="mt-2 py-5">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image }}" alt="{{ product.name }}" /></div>
+                        <div class="col-md-6">
+
+                            <h3 class="display-5 fw-bolder">{{ product.name }}</h3>
+                            <div class="fs-5 mb-4">
+                                <h7 class="text-muted">${{ product.original_price }}</h7>
+                                <span>${{ product.discount_price }}</span>
+                            </div>
+                            <p class="lead mb-1" style="font-size=2px;">{{ product.description }}</p>
+                            <div class="fs-5 mb-4">
+                                <span class="my-3">by <a href="{{ url_for('view.filter_product_details', filterType='brand', filterValue=product.brand.name) }}">{{ product.brand.name }}</a></span>
+                            </div>
+                            <div class="fs-5 mb-4">
+                                {% if product.in_stock %}
+                                    <span style="color:green">In-stock</span>
+                                {% else %}
+                                    <span style="color:red">Out-of-stock</span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex">
+                                <form method="post" onsubmit=" event.preventDefault(); addToBasket({{ product._id }}); window.scrollTo(0, 0);" id="{{ product._id }}">
+                                    <div class="form-group row">
+                                        <label for="inputOnline" class="d-inline form-check-label ml-3"><b>Quantity: </b> &nbsp;</label>
+                                        <input class="d-inline form-control text-center" type="num" name="productQuantity" value="1" style="max-width: 3rem; max-height: 1.9rem;" placeholder="1" id="inputOnline"/><br/>
+                                        <button class="d-inline btn btn-outline-primary btn-sm form-control-sm" style="max-height: 7.7rem;" type="submit">
+                                            <span class="py-auto">Add to Basket</span>
+                                        </button>
+                                        <a href="{{ url_for('view.single_product', product_id=product._id) }}" type="button" class="btn btn-outline-primary btn-sm form-control-sm"> View Product Details</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr>
+        {% endfor %}
+    <center>
+        <nav aria-label="Pagination {{ product }}">
+          <ul class="pagination justify-content-center">
+
+              {% if products.has_prev %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('view.filter_product_details', filterType=filter_type, filterValue=product, pageNumber=products.page - 1, pageLimit=session['pageLimit']) }}">Previous</a></li>
+              {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+              {% endif %}
+
+              {% for page_number in products.iter_pages(left_current=10, right_current=10) %}
+                  {% if products.page != page_number %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('view.filter_product_details', filterType=filter_type, filterValue=product, pageNumber=page_number, pageLimit=session['pageLimit']) }}">{{ page_number }}</a></li>
+                  {% else %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ products.page }}</a></li>
+                  {% endif %}
+              {% endfor %}
+
+              {% if products.has_next %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('view.filter_product_details', filterType=filter_type, filterValue=product, pageNumber=products.page + 1, pageLimit=session['pageLimit']) }}">Next</a></li>
+              {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+              {% endif %}
+
+          </ul>
+        </nav>
+    </center>
+    {% else %}
+        {% if filter_type == "brand" %}
+            <div class="jumbotron">
+                <p class="lead m-3 text-center"> No brand name found matching keyword "{{ product }}". Please try again with a valid keyword. </p>
+            </div>
+        {% else %}
+            <div class="jumbotron">
+                <p class="lead m-3 text-center"> No products found under category "{{ product }}". </p>
+            </div>
+        {% endif %}
+    {% endif %}
+<hr/>
+    <script>
+        function addToBasket(productId){
+            let elementForm = document.getElementById(productId)[0];
+            console.log(productId);
+            console.log(elementForm.value);
+            fetch ("/addToBasket", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ productId: productId, quantity: elementForm.value, action: "add"})
+                })
+            .then(x => {
+                console.log(x);
+                if(x.status === 200){
+                    setAlert('success', 'Item successfully added to basket! Updating basket...')
+                    window.setTimeout( function() {
+                      window.location.reload();
+                    }, 2000);
+                }
+            });
+        }
+    </script>
+{% endblock %}

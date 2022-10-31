@@ -1,0 +1,91 @@
+
+
+.form-inline .form-control {
+    display: inline-block;
+    width: 300px;
+    vertical-align: middle;
+}
+.form-inline label {
+    display: flex;
+    text-align: left;
+}
+.btn {
+    padding: 0.375rem 1.2rem;
+    margin-left: 20px;
+}
+.btn2 {
+    padding: 0.375rem 1.2rem;
+    margin-left: 0px;
+}
+label {
+    display: block;
+    margin-bottom: -67.5rem;
+}
+.form-label{
+margin-bottom: 10px;
+}
+.input-group-text {
+  
+    background-color: #dfe7ee;
+}
+.dropdown-toggle::after {
+    display: inline-block;
+    
+}
+.btn-secondary {
+    color: grey;
+    background-color: #ffffff;
+    border-color: grey;
+}
+
+.input-group-text {
+    background-color: #f3f3f3;
+}
+.nav-item{
+    text-align: left;
+}
+.navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 3rem;
+}
+.card{
+    margin: 15px;
+}
+.card2{
+    margin: 0px;
+}
+h2{
+    text-align: center;
+}
+.box{
+    
+    text-align: center;
+    background-color: #F5F6F7;
+    margin-top: 25px;
+}
+h7{
+    text-decoration: line-through;
+    
+}
+.table td, .table th {
+    border: none;
+    padding: 1px;
+}
+.table thead th {
+    border-bottom: none;
+  
+}
+  .card-img-top {
+   
+    width: 60%  !important;
+}
+.singleimg{
+    width: 70%;
+}
+.category{
+    width: 90%;
+}

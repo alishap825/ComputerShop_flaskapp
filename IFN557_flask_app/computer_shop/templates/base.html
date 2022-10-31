@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Just a text -VD -->
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+
+    <title>Ecommerce site</title>
+  </head>
+  <body>
+    <a name="top"></a>
+    <header>
+        {% block navbar %}
+        {% endblock %}
+    </header>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert" hidden>
+      <span></span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onsubmit="location.reload();">
+        <span aria-hidden="false">&times;</span>
+      </button>
+    </div>
+    {% block body_content %}
+    {% endblock %}
+    <script>
+        window.onload = function(){
+          if(sessionStorage.getItem("reloading")){
+            setAlert(sessionStorage.getItem("status"), sessionStorage.getItem("message"))
+            if(sessionStorage.getItem("status") === "danger"){
+              document.getElementById("exampleModal").setAttribute("aria-hidden", false);
+            }
+            sessionStorage.removeItem("reloading");
+            sessionStorage.removeItem("status");
+            sessionStorage.removeItem("message");
+          }
+        }
+        function setAlert(status, message){
+            if(status === 'success'){
+                alertEl = document.getElementById("alert");
+                alertEl.setAttribute("class", "alert alert-success alert-dismissible fade show");
+            }
+            if(status === 'danger'){
+                $('#exampleModal').modal('show');
+                alertEl = document.getElementById("alert2");
+                alertEl.setAttribute("class", "alert alert-danger alert-dismissible fade show");
+            }
+            console.log(alertEl);
+            alertEl.innerText = message;
+            alertEl.removeAttribute("hidden");
+            window.scrollTo(0, 0);
+            window.setTimeout(function(){
+              alertEl.setAttribute("hidden", true)
+            }, 3000)
+        }
+    </script>
+    <footer class="col-md-12">
+        <p class="float-left text-center">© 2017-2022 Company, Inc. · <a href="">Privacy </a>· <a href="">Terms</a></p>
+        <p class="float-right"><a href="#top" class="text-right">Back to top </a></p>
+     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+
+  </body>
+ </html>
