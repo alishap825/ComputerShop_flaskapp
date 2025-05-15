@@ -1,7 +1,7 @@
 <h1>Computer Shop App</h1>
 
 <h2>Description</h2>
-<br>Developed a full-stack e-commerce platform using Flask, SQLite, and Bootstrap, providing a seamless shopping experience with advanced filtering and purchasing capabilities. Integrated a session-based shopping cart using Flask sessions and SQLAlchemy, enabling users to add, update, and remove items before a secure checkout. Designed a responsive UI with Jinja2 templating, HTML, CSS, and JavaScript, ensuring an optimized experience across desktop and mobile devices.</br> Check it out here - https://cryptic-coast-98084-e088554023f1.herokuapp.com/
+<br>Developed a full-stack e-commerce platform using Flask, SQLite, and Bootstrap, providing a seamless shopping experience with advanced filtering and purchasing capabilities. Integrated a session-based shopping cart using Flask sessions and SQLAlchemy, enabling users to add, update, and remove items before a secure checkout. Designed a responsive UI with Jinja2 templating, HTML, CSS, and JavaScript, ensuring an optimized experience across desktop and mobile devices. Check it out here - https://cryptic-coast-98084-e088554023f1.herokuapp.com/ </br>
 
 
 ![ScrollCapture 2025-02-14 at 0 26 09](https://github.com/user-attachments/assets/d0068c3c-61e9-4c5e-95d5-64aa76a5ec3f)
